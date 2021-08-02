@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Campaign;
+import com.example.demo.exception.InValidBidAmountException;
 import com.example.demo.exception.InValidDateException;
+import com.example.demo.exception.InvalidBudgetBidAmountException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.dto.campaign.CampaignDto;
 import com.example.demo.model.dto.campaign.ResponseForBannerDto;
@@ -56,6 +58,12 @@ public class CampaignServiceImpl implements CampaignService {
         Campaign campaign = campaignRepository.findByCampaignId(id);
         if (!campaignRepository.existsById(id) || campaign.getIsDelete()) {
             throw new NotFoundException("Not found campaign");
+        }
+        if (!DateConditional.endDateConditional(request.getStartDate(), request.getEndDate())) {
+            throw new InValidDateException();
+        }
+        if (request.getBidAmount() * request.getOveralBudget() <= 0 || request.getOveralBudget() < request.getBidAmount()) {
+            throw new InvalidBudgetBidAmountException();
         }
         campaign.setCampaignName(request.getCampaignName());
         campaign.setCampaignStatus(request.getCampaignStatus());

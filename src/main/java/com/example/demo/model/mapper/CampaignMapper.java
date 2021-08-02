@@ -41,7 +41,7 @@ public class CampaignMapper {
             throw new InValidBidAmountException();
         }
 
-        if (request.getBidAmount() * request.getOveralBudget() <= 0 || request.getOveralBudget() < request.getBidAmount()) {
+        if (request.getBidAmount() * request.getOveralBudget() <= 0) {
             throw new InvalidBudgetBidAmountException();
         }
         campaign.setStartDate(request.getStartDate());
