@@ -22,21 +22,19 @@ public class AccountMapper {
         userDto.setIsDelete(account.getIsDelete());
         return userDto;
     }
-    public static Account toCreateAccount(ParamCreateUser req) {
+    public static Account toCreateAccount(ParamCreateUser request) {
         Account account = new Account();
-        Date now = new Date();
+        String avatarDefault = "https://i.pinimg.com/736x/24/3e/03/243e034e3fc44551e39264c60937b8ab.jpg";
 
         account.setAccountId(account.getAccountId());
-        account.setAccountName(req.getUserName());
-        String hash = BCrypt.hashpw(req.getUserPassword(), BCrypt.gensalt(12));
+        account.setAccountName(request.getUserName());
+        String hash = BCrypt.hashpw(request.getUserPassword(), BCrypt.gensalt(12));
         account.setAccountPassword(hash);
-        account.setEmailAddress(req.getEmailAddress());
-        account.setAccountImage("ava.png");
+        account.setEmailAddress(request.getEmailAddress());
+        account.setAccountImage(avatarDefault);
         account.setAccountStatus(0);
-        account.setApprovalDate(now);
-        account.setDateCreated(now);
-        account.setDateModified(now);
-        account.setRoleId(req.getRoleId());
+
+        account.setRoleId(request.getRoleId());
         account.setIsDelete(false);
 
         return account;

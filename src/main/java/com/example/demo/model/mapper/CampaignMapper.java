@@ -3,6 +3,7 @@ package com.example.demo.model.mapper;
 import com.example.demo.entity.Campaign;
 import com.example.demo.exception.InValidBidAmountException;
 import com.example.demo.exception.InValidDateException;
+import com.example.demo.exception.InvalidBudgetBidAmountException;
 import com.example.demo.model.dto.campaign.CampaignDto;
 import com.example.demo.model.request.campaignRequest.CampaignRequest;
 import com.example.demo.util.DateConditional;
@@ -39,6 +40,10 @@ public class CampaignMapper {
         if (request.getOveralBudget() < request.getBidAmount()) {
             throw new InValidBidAmountException();
         }
+
+        if (request.getBidAmount() * request.getOveralBudget() <= 0 || request.getOveralBudget() < request.getBidAmount()) {
+            throw new InvalidBudgetBidAmountException();
+        }
         campaign.setStartDate(request.getStartDate());
         campaign.setEndDate(request.getEndDate());
 
@@ -58,7 +63,6 @@ public class CampaignMapper {
         campaign.setPreview(request.getPreview());
         campaign.setFinalUrl(request.getFinalUrl());
 
-        campaign.setCost(0);
         campaign.setClicks(0);
         campaign.setUsedAmount(0);
         campaign.setUsageRate(0f);

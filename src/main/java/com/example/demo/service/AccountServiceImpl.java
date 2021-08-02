@@ -43,7 +43,6 @@ public class AccountServiceImpl implements AccountService {
 
     Date now = new Date();
 
-
     @Override
     public UserDto getInfoUserFromToken(String token) {
         if (jwtProvider.validateToken(token) == null) {
@@ -136,7 +135,7 @@ public class AccountServiceImpl implements AccountService {
             throw new NotFoundException("Not found user");
         }
         account.setAccountName(req.getUserName());
-        account.setDateModified(now);
+        account.setAccountImage(req.getUserImage());
         accountRepository.save(account);
 
         return AccountMapper.toUserDto(account);

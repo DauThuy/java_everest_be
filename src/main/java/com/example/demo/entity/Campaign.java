@@ -66,9 +66,6 @@ public class Campaign {
     @Column(name="final_url", nullable = false)
     private String finalUrl;
 
-    @Column(name="cost")
-    private Integer cost;
-
     @Column(name="clicks")
     private Integer clicks;
 
@@ -79,5 +76,3 @@ public class Campaign {
     private Integer usedAmount;
 }
 
-//, columnDefinition = "int default 0"
-//  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

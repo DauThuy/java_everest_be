@@ -7,6 +7,6 @@ public class CampaignUtils implements Comparator <CampaignDto> {
 
     @Override
     public int compare(CampaignDto campaignDto1, CampaignDto campaignDto2) {
-        return campaignDto1.getCampaignName().compareTo(campaignDto2.getCampaignName());
+        return campaignDto2.getBidAmount() - campaignDto1.getBidAmount();
     }
 }
