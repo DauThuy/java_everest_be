@@ -46,7 +46,7 @@ public class CampaignController {
     @DeleteMapping("/campaign/{id}")
     public ResponseEntity<?> deleteCampaign(@PathVariable int id) {
         campaignService.deleteCampaignById(id);
-        return ResponseEntity.ok("deleted campaign " + id);
+        return ResponseEntity.ok(id);
     }
 
     @PostMapping("/campaigns/{id}/click")

@@ -6,7 +6,7 @@ import com.example.demo.exception.InValidDateException;
 import com.example.demo.exception.InvalidBudgetBidAmountException;
 import com.example.demo.model.dto.campaign.CampaignDto;
 import com.example.demo.model.request.campaignRequest.CampaignRequest;
-import com.example.demo.util.DateConditional;
+import com.example.demo.utils.DateConditional;
 
 public class CampaignMapper {
     public static CampaignDto toCampaignDto(Campaign campaign) {
@@ -46,9 +46,6 @@ public class CampaignMapper {
         }
         campaign.setStartDate(request.getStartDate());
         campaign.setEndDate(request.getEndDate());
-
-        System.out.println("end date: " + request.getEndDate());
-        System.out.println("end date: " + campaign.getEndDate());
 
         campaign.setCampaignName(request.getCampaignName());
         campaign.setOveralBudget(request.getOveralBudget());

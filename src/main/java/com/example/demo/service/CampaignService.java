@@ -12,7 +12,7 @@ public interface CampaignService {
     CampaignDto getCampaignById(int id);
     CampaignDto createCampaign(CampaignRequest request);
     CampaignDto updateCampaign(CampaignRequest request, int id);
-    String deleteCampaignById(int id);
+    void deleteCampaignById(int id);
     ResponseForClickDto getViews(int id);
     List<ResponseForBannerDto> getBanners();
 }

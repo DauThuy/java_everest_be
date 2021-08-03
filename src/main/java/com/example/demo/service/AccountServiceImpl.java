@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.constant.MessageError;
 import com.example.demo.entity.Token;
 import com.example.demo.exception.InValidPasswordException;
 import com.example.demo.exception.NotFoundException;
@@ -11,14 +12,14 @@ import com.example.demo.model.request.accountRequest.ParamCreateUser;
 import com.example.demo.model.request.accountRequest.ParamAdminUpdateUser;
 import com.example.demo.model.request.accountRequest.ParamUserUpdateUser;
 import com.example.demo.repository.TokenRepository;
-import com.example.demo.util.EmailValidate;
+import com.example.demo.utils.EmailValidate;
 import com.example.demo.exception.InValidEmailException;
 import com.example.demo.exception.UnauthorizedException;
 import com.example.demo.security.ProvideJwt;
 import com.example.demo.model.dto.account.AccountDto;
 import com.example.demo.entity.Account;
 import com.example.demo.repository.AccountRepository;
-import com.example.demo.util.UserUtils;
+import com.example.demo.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -87,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
         List<Account> accounts = accountRepository.findAllBy();
 
         if (accounts == null) {
-            throw new NotFoundException("No account exists");
+            throw new NotFoundException(MessageError.NOT_FOUND_USER);
         }
 
         for (Account account: accounts) {
@@ -104,7 +105,7 @@ public class AccountServiceImpl implements AccountService {
     public UserDto getUserById(int id) {
         Account account = accountRepository.findByAccountId(id);
         if (account == null || account.getIsDelete()) {
-            throw new NotFoundException("Not found user");
+            throw new NotFoundException(MessageError.NOT_FOUND_USER);
         }
         return AccountMapper.toUserDto(account);
     }
@@ -113,7 +114,7 @@ public class AccountServiceImpl implements AccountService {
     public String deleteUserById(int id) {
         Account account = accountRepository.findByAccountId(id);
         if (account == null || account.getIsDelete()) {
-            throw new NotFoundException("Not found user");
+            throw new NotFoundException(MessageError.NOT_FOUND_USER);
         }
         account.setIsDelete(true);
         accountRepository.save(account);
@@ -126,7 +127,7 @@ public class AccountServiceImpl implements AccountService {
         List<Account> accounts = accountRepository.findAllBy();
         for (Account account: accounts) {
             if (account.getEmailAddress().equals(req.getEmailAddress())) {
-                throw new DuplicateKeyException("Email already exists");
+                throw new DuplicateKeyException(MessageError.EMAIL_ALREADY_EXIST);
             }
             if (account == null) {
                 break;
@@ -142,7 +143,7 @@ public class AccountServiceImpl implements AccountService {
     public UserDto updateUserByUser(ParamUserUpdateUser req, int id) {
         Account account = accountRepository.findByAccountId(id);
         if (!accountRepository.existsById(id) || account.getIsDelete()) {
-            throw new NotFoundException("Not found user");
+            throw new NotFoundException(MessageError.NOT_FOUND_USER);
         }
         account.setAccountName(req.getUserName());
         account.setAccountImage(req.getUserImage());
@@ -155,7 +156,7 @@ public class AccountServiceImpl implements AccountService {
     public UserDto updateUserByAdmin(ParamAdminUpdateUser req, int id) {
         Account account = accountRepository.findByAccountId(id);
         if (!accountRepository.existsById(id) || account.getIsDelete()) {
-            throw new NotFoundException("Not found user");
+            throw new NotFoundException(MessageError.NOT_FOUND_USER);
         }
         account.setAccountName(req.getUserName());
         account.setRoleId(req.getRoleId());
@@ -169,7 +170,7 @@ public class AccountServiceImpl implements AccountService {
     public UserDto changePassword(ParamChangePassword req, int id) {
         Account account = accountRepository.findByAccountId(id);
         if (!accountRepository.existsById(id) || account.getIsDelete()) {
-            throw new NotFoundException("Not found user");
+            throw new NotFoundException(MessageError.NOT_FOUND_USER);
         }
         if (!encoder.matches(req.getOldPassword(), account.getAccountPassword()) ||
                 !req.getNewPassWord().equals(req.getConfirmNewPassWord())) {

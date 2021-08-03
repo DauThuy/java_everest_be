@@ -57,7 +57,6 @@ public class UserController {
         return ResponseEntity.ok(account);
     }
 
-
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUserByAdmin(@Valid @RequestBody ParamAdminUpdateUser req, @PathVariable int id) {
         UserDto account = accountService.updateUserByAdmin(req, id);
@@ -67,14 +66,12 @@ public class UserController {
     @PutMapping("users/change-password/{id}")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ParamChangePassword req, @PathVariable int id) {
         accountService.changePassword(req, id);
-        System.out.println("Password has changed");
-        return ResponseEntity.ok("Changed password");
+        return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         accountService.deleteUserById(id);
-        System.out.println("Deleted");
-        return ResponseEntity.ok("Deleted user");
+        return ResponseEntity.ok(id);
     }
 }

@@ -1,10 +1,9 @@
 package com.example.demo.model.mapper;
+import com.example.demo.constant.Url;
 import com.example.demo.entity.Account;
 import com.example.demo.model.dto.account.UserDto;
 import com.example.demo.model.request.accountRequest.ParamCreateUser;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-
-import java.util.Date;
 
 public class AccountMapper {
     public static UserDto toUserDto (Account account) {
@@ -20,11 +19,12 @@ public class AccountMapper {
         userDto.setDateModified(account.getDateModified());
         userDto.setRoleId(account.getRoleId());
         userDto.setIsDelete(account.getIsDelete());
+
         return userDto;
     }
     public static Account toCreateAccount(ParamCreateUser request) {
         Account account = new Account();
-        String avatarDefault = "https://i.pinimg.com/736x/24/3e/03/243e034e3fc44551e39264c60937b8ab.jpg";
+        String avatarDefault = Url.accountImage;
 
         account.setAccountId(account.getAccountId());
         account.setAccountName(request.getUserName());

@@ -1,4 +1,4 @@
-package com.example.demo.util;
+package com.example.demo.utils;
 
 import com.example.demo.model.dto.campaign.CampaignDto;
 import java.util.Comparator;
