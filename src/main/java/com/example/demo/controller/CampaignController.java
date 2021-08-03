@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.constant.MessageSuccess;
 import com.example.demo.model.dto.campaign.CampaignDto;
 import com.example.demo.model.dto.campaign.ResponseForBannerDto;
 import com.example.demo.model.dto.campaign.ResponseForClickDto;
@@ -46,7 +47,7 @@ public class CampaignController {
     @DeleteMapping("/campaign/{id}")
     public ResponseEntity<?> deleteCampaign(@PathVariable int id) {
         campaignService.deleteCampaignById(id);
-        return ResponseEntity.ok(id);
+        return ResponseEntity.ok(MessageSuccess.DELETE_SUCCESS);
     }
 
     @PostMapping("/campaigns/{id}/click")

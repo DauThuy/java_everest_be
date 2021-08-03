@@ -17,7 +17,7 @@ public interface AccountService {
     UserDto getInfoUserFromToken(String token);
     List<UserDto> getAllUser();
     UserDto getUserById(int id);
-    String deleteUserById(int id);
+    void deleteUserById(int id);
     UserDto createUser(ParamCreateUser req);
     UserDto updateUserByUser(ParamUserUpdateUser req, int id);
     UserDto updateUserByAdmin(ParamAdminUpdateUser req, int id);

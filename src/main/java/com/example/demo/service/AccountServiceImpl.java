@@ -111,15 +111,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public String deleteUserById(int id) {
+    public void deleteUserById(int id) {
         Account account = accountRepository.findByAccountId(id);
         if (account == null || account.getIsDelete()) {
             throw new NotFoundException(MessageError.NOT_FOUND_USER);
         }
         account.setIsDelete(true);
         accountRepository.save(account);
-
-        return "account is removed" + id + ": " + account.getAccountName();
     }
 
     @Override

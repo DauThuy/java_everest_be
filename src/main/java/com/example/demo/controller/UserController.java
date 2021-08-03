@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.constant.MessageSuccess;
 import com.example.demo.model.dto.account.AccountDto;
 import com.example.demo.model.dto.token.TokenResponse;
 import com.example.demo.model.dto.account.UserDto;
@@ -72,6 +73,6 @@ public class UserController {
     @DeleteMapping("users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         accountService.deleteUserById(id);
-        return ResponseEntity.ok(id);
+        return ResponseEntity.ok(MessageSuccess.DELETE_SUCCESS);
     }
 }
