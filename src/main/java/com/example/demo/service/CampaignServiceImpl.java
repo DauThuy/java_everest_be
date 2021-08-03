@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Campaign;
-import com.example.demo.exception.InValidBidAmountException;
 import com.example.demo.exception.InValidDateException;
 import com.example.demo.exception.InvalidBudgetBidAmountException;
 import com.example.demo.exception.NotFoundException;
@@ -27,7 +26,9 @@ public class CampaignServiceImpl implements CampaignService {
     public List<CampaignDto> getListCampaigns() {
         List<CampaignDto> campaignDtos = new ArrayList<>();
         List<Campaign> campaigns = campaignRepository.findAllBy();
-
+        if (campaigns == null) {
+            throw new NotFoundException("No campaign exist");
+        }
         for (Campaign campaign : campaigns) {
             if (!campaign.getIsDelete()) {
                 campaignDtos.add(CampaignMapper.toCampaignDto(campaign));
@@ -89,6 +90,9 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public String deleteCampaignById(int id) {
         Campaign campaign = campaignRepository.findByCampaignId(id);
+        if (campaign == null || campaign.getIsDelete()) {
+            throw new NotFoundException("Not found campaign");
+        }
         campaign.setIsDelete(true);
         campaignRepository.save(campaign);
 
@@ -99,6 +103,9 @@ public class CampaignServiceImpl implements CampaignService {
     public ResponseForClickDto getViews(int id) {
         ResponseForClickDto responseForClickDto = new ResponseForClickDto();
         Campaign campaign = campaignRepository.findByCampaignId(id);
+        if (campaign == null || campaign.getIsDelete()) {
+            throw new NotFoundException("Not found campaign");
+        }
         int bidAmount = campaign.getBidAmount();
         int budget = campaign.getOveralBudget();
         int clicks = campaign.getClicks();
@@ -124,6 +131,9 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public List<ResponseForBannerDto> getBanners() {
         List<Campaign> campaigns = campaignRepository.findAllBy();
+        if (campaigns == null) {
+            throw new NotFoundException("No campaign exist");
+        }
         List<Campaign> campaignSortedByBidAmounts = new ArrayList<>();
         List<ResponseForBannerDto> banners = new ArrayList<>();
 

@@ -86,6 +86,10 @@ public class AccountServiceImpl implements AccountService {
         List<UserDto> userDtos = new ArrayList<>();
         List<Account> accounts = accountRepository.findAllBy();
 
+        if (accounts == null) {
+            throw new NotFoundException("No account exists");
+        }
+
         for (Account account: accounts) {
             if (!account.getIsDelete()) {
                 userDtos.add(AccountMapper.toUserDto(account));
@@ -99,7 +103,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public UserDto getUserById(int id) {
         Account account = accountRepository.findByAccountId(id);
-        if (!accountRepository.existsById(id) || account.getIsDelete()) {
+        if (account == null || account.getIsDelete()) {
             throw new NotFoundException("Not found user");
         }
         return AccountMapper.toUserDto(account);
@@ -108,6 +112,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public String deleteUserById(int id) {
         Account account = accountRepository.findByAccountId(id);
+        if (account == null || account.getIsDelete()) {
+            throw new NotFoundException("Not found user");
+        }
         account.setIsDelete(true);
         accountRepository.save(account);
 
@@ -120,6 +127,9 @@ public class AccountServiceImpl implements AccountService {
         for (Account account: accounts) {
             if (account.getEmailAddress().equals(req.getEmailAddress())) {
                 throw new DuplicateKeyException("Email already exists");
+            }
+            if (account == null) {
+                break;
             }
         }
         Account account = AccountMapper.toCreateAccount(req);
