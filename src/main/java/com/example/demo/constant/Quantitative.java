@@ -1,5 +1,5 @@
 package com.example.demo.constant;
 
 public class Quantitative {
-    public static int numberOfBanners = 4;
+    public final static int NUMBER_OF_BANNERS = 4;
 }

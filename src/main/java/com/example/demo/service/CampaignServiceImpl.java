@@ -115,7 +115,7 @@ public class CampaignServiceImpl implements CampaignService {
         if (campaign == null || campaign.getIsDelete()) {
             throw new NotFoundException(MessageError.NOT_FOUND_CAMPAIGN);
         }
-        
+
         clicks = clicks + 1;
         usedAmount = usedAmount + clicks * bidAmount;
 
@@ -155,9 +155,8 @@ public class CampaignServiceImpl implements CampaignService {
             int overalBudget = campaign.getOveralBudget();
             int usedAmount = campaign.getUsedAmount();
             int bidAmount = campaign.getBidAmount();
-            int ACTIVE = Status.ACTIVE.getValueActive();
 
-            if (overalBudget - usedAmount >= bidAmount && campaign.getCampaignStatus() == ACTIVE) {
+            if (overalBudget - usedAmount >= bidAmount && campaign.getCampaignStatus() == Status.ACTIVE.getValueActive()) {
                 campaignSortedByBidAmounts.add(campaign);
             }
         }
@@ -167,7 +166,7 @@ public class CampaignServiceImpl implements CampaignService {
 
         int countBanner = 0;
         for (Campaign campaign : campaignSortedByBidAmounts) {
-            if (countBanner >= Quantitative.numberOfBanners) {
+            if (countBanner >= Quantitative.NUMBER_OF_BANNERS) {
                 break;
             }
             banners.add(new ResponseForBannerDto(campaign.getCampaignId(), campaign.getPreview()));

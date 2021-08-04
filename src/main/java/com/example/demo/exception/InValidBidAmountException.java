@@ -1,7 +1,9 @@
 package com.example.demo.exception;
 
+import com.example.demo.constant.MessageError;
+
 public class InValidBidAmountException extends RuntimeException{
     public InValidBidAmountException() {
-        super("Invalid budget, overal budget must be greater than bid amount");
+        super(MessageError.INVALID_BID_AMOUNT);
     }
 }

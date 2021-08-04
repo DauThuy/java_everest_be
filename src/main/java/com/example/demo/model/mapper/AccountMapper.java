@@ -24,7 +24,7 @@ public class AccountMapper {
     }
     public static Account toCreateAccount(ParamCreateUser request) {
         Account account = new Account();
-        String avatarDefault = Url.accountImage;
+        String avatarDefault = Url.ACCOUNT_IMAGE;
 
         account.setAccountId(account.getAccountId());
         account.setAccountName(request.getUserName());
