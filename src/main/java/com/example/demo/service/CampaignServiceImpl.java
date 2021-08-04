@@ -66,7 +66,8 @@ public class CampaignServiceImpl implements CampaignService {
         if (!DateConditional.endDateConditional(request.getStartDate(), request.getEndDate())) {
             throw new InValidDateException();
         }
-        if (request.getBidAmount() * request.getOveralBudget() <= 0 || request.getOveralBudget() < request.getBidAmount()) {
+        if (request.getBidAmount() * request.getOveralBudget() <= 0 || request.getOveralBudget() < request.getBidAmount()
+        || request.getOveralBudget() < campaign.getUsedAmount()) {
             throw new InvalidBudgetBidAmountException();
         }
         campaign.setCampaignName(request.getCampaignName());
@@ -87,6 +88,9 @@ public class CampaignServiceImpl implements CampaignService {
         campaign.setFinalUrl(request.getFinalUrl());
 
         campaignRepository.save(campaign);
+
+        campaign.setUsageRate(calUsageRate(id));
+        campaignRepository.save(campaign);
         return CampaignMapper.toCampaignDto(campaign);
     }
 
@@ -104,28 +108,37 @@ public class CampaignServiceImpl implements CampaignService {
     public ResponseForClickDto getViews(int id) {
         ResponseForClickDto responseForClickDto = new ResponseForClickDto();
         Campaign campaign = campaignRepository.findByCampaignId(id);
+        int clicks = campaign.getClicks();
+        int usedAmount = campaign.getUsedAmount();
+        int bidAmount = campaign.getBidAmount();
+
         if (campaign == null || campaign.getIsDelete()) {
             throw new NotFoundException(MessageError.NOT_FOUND_CAMPAIGN);
         }
-        int bidAmount = campaign.getBidAmount();
-        int budget = campaign.getOveralBudget();
-        int clicks = campaign.getClicks();
-        int usedAmount = campaign.getUsedAmount();
-
+        
         clicks = clicks + 1;
         usedAmount = usedAmount + clicks * bidAmount;
 
+        campaign.setUsedAmount(usedAmount);
+        campaignRepository.save(campaign);
+
+        float usageRate = calUsageRate(id);
+        campaign.setUsageRate(usageRate);
+        campaignRepository.save(campaign);
+
         responseForClickDto.setFinalUrl(campaign.getFinalUrl());
+        return responseForClickDto;
+    }
+
+    public float calUsageRate(int id) {
+        Campaign campaign = campaignRepository.findByCampaignId(id);
+        int budget = campaign.getOveralBudget();
+        int usedAmount = campaign.getUsedAmount();
 
         float usageRate = (usedAmount * 100.0f) / budget;
         usageRate = (float) Math.floor(usageRate * 100) / 100;
 
-        campaign.setUsedAmount(usedAmount);
-        campaign.setUsageRate(usageRate);
-
-        campaignRepository.save(campaign);
-
-        return responseForClickDto;
+        return usageRate;
     }
 
     @Override
