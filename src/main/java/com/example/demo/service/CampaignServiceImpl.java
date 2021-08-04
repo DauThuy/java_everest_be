@@ -67,7 +67,7 @@ public class CampaignServiceImpl implements CampaignService {
             throw new InValidDateException();
         }
         if (request.getBidAmount() * request.getOveralBudget() <= 0 || request.getOveralBudget() < request.getBidAmount()
-        || request.getOveralBudget() < campaign.getUsedAmount()) {
+                || request.getOveralBudget() < campaign.getUsedAmount()) {
             throw new InvalidBudgetBidAmountException();
         }
         campaign.setCampaignName(request.getCampaignName());
@@ -156,7 +156,7 @@ public class CampaignServiceImpl implements CampaignService {
             int usedAmount = campaign.getUsedAmount();
             int bidAmount = campaign.getBidAmount();
 
-            if (overalBudget - usedAmount >= bidAmount && campaign.getCampaignStatus() == Status.ACTIVE.getValueActive()) {
+            if (overalBudget - usedAmount >= bidAmount && campaign.getCampaignStatus() == Status.ACTIVE.getValueActive() || !campaign.getIsDelete()) {
                 campaignSortedByBidAmounts.add(campaign);
             }
         }
