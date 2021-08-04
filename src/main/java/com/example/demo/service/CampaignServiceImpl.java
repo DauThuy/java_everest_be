@@ -156,7 +156,7 @@ public class CampaignServiceImpl implements CampaignService {
             int usedAmount = campaign.getUsedAmount();
             int bidAmount = campaign.getBidAmount();
 
-            if (overalBudget - usedAmount >= bidAmount && campaign.getCampaignStatus() == Status.ACTIVE.getValueActive() || !campaign.getIsDelete()) {
+            if (overalBudget - usedAmount >= bidAmount && campaign.getCampaignStatus() == Status.ACTIVE.getValueActive() && !campaign.getIsDelete()) {
                 campaignSortedByBidAmounts.add(campaign);
             }
         }
